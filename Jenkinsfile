@@ -2,16 +2,15 @@ pipeline {
     agent any
     
     environment {
-        // Define any environment variables you need, such as AWS credentials or S3 bucket information
-        AWS_REGION = 'ap-south-1'  // Adjust to your desired AWS region
-        APPLICATION_NAME = 'jenkin-CICD'  // The name of your CodeDeploy application
-        DEPLOYMENT_GROUP_NAME = 'jenkins-dg'  // The name of your CodeDeploy deployment group
+        AWS_REGION = 'ap-south-1'
+        APPLICATION_NAME = 'jenkin-CICD'
+        DEPLOYMENT_GROUP_NAME = 'jenkins-dg'
     }
     
     stages {
         stage('Checkout Code') {
             steps {
-                // Checkout the code from the GitHub repository
+                // Checkout the code from GitHub
                 git branch: 'master', url: 'https://github.com/Sona-Yadav/simplehelloworld.git'
             }
         }
@@ -19,28 +18,33 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                // Add your build commands here (e.g., building artifacts, running tests)
-                // Example for Node.js: sh 'npm install && npm run build'
+                // Add your build commands here
+                // Example for a Node.js project: sh 'npm install && npm run build'
+                // You can archive build artifacts if needed, like war or zip files.
+            }
+        }
+        
+        stage('Package') {
+            steps {
+                echo 'Packaging...'
+                // Archive or zip the application files to prepare for deployment.
+                sh 'zip -r app.zip *'  // Example: create a zip file of your app.
             }
         }
         
         stage('Deploy to AWS') {
             steps {
-                echo 'Deploying to AWS...'
+                echo 'Deploying to AWS CodeDeploy...'
                 
-                // Add commands to trigger AWS CodeDeploy deployment
-                // This assumes you are using the AWS CodeDeploy Jenkins plugin
-
+                // Trigger AWS CodeDeploy using the AWS CodeDeploy plugin
                 step([
                     $class: 'AWSCodeDeployPublisher',
-                    applicationName: "${APPLICATION_NAME}",  // The name of your CodeDeploy application
-                    deploymentGroupName: "${DEPLOYMENT_GROUP_NAME}",  // The name of your CodeDeploy deployment group
-                    s3bucket: '',  // Optionally, specify an S3 bucket if you are using one for your deployment artifacts
-                    s3prefix: '',  // Optionally, specify an S3 prefix if using one
+                    applicationName: "${APPLICATION_NAME}",
+                    deploymentGroupName: "${DEPLOYMENT_GROUP_NAME}",
                     deploymentRevisionLocation: [
-                        revisionType: 'Blue/green',  // You can use 'S3' if your artifacts are in an S3 bucket
+                        revisionType: 'GitHub',  // Use GitHub as the source of your code
                         repositoryName: 'Sona-Yadav/simplehelloworld',
-                        commitId: 'master'  // You can use a specific commit ID or branch
+                        commitId: 'master'  // Specify the branch or commit ID
                     ]
                 ])
             }
