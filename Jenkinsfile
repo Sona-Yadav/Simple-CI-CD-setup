@@ -38,7 +38,7 @@ pipeline {
                     s3bucket: '',  // Optionally, specify an S3 bucket if you are using one for your deployment artifacts
                     s3prefix: '',  // Optionally, specify an S3 prefix if using one
                     deploymentRevisionLocation: [
-                        revisionType: 'GitHub',  // You can use 'S3' if your artifacts are in an S3 bucket
+                        revisionType: 'Blue/green',  // You can use 'S3' if your artifacts are in an S3 bucket
                         repositoryName: 'Sona-Yadav/simplehelloworld',
                         commitId: 'master'  // You can use a specific commit ID or branch
                     ]
