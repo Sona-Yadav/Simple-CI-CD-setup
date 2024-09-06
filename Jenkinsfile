@@ -62,7 +62,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Checkout the code from the Git repository
-                git url: 'https://github.com/Sona-Yadav/simplehelloworld.git', branch: 'master', credentialsId: 'github-credentials'
+                git url: 'https://github.com/Sona-Yadav/simplehelloworld.git', branch: 'master', credentialsId: 'github-credential'
             }
         }
 
@@ -85,7 +85,7 @@ pipeline {
                             repositoryName: 'Sona-Yadav/simplehelloworld',
                             commitId: 'b9994d63371db899759c294883f98ad9caf8cc34'
                         ],
-                        region: 'us-east-1' // Ensure the correct AWS region
+                        region: 'ap-south-1' // Ensure the correct AWS region
                     )
                 }
             }
