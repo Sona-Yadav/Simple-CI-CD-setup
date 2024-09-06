@@ -57,21 +57,21 @@ pipeline {
     agent any
     
     environment {
-        AWS_CREDENTIALS = 'aws-credential' // Replace with your AWS credentials ID
+        AWS_CREDENTIALS = 'aws-credentials' // Your AWS credentials ID
     }
     
     stages {
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/Sona-Yadav/simplehelloworld.git', branch: 'master'
+                git url: 'https://github.com/Sona-Yadav/simplehelloworld.git', branch: 'main'
             }
         }
         
         stage('Build') {
             steps {
                 script {
-                    // Optional: Add build steps if needed
-                    // For example: Running tests
+                    // Optionally run build steps, e.g., tests
+                    echo 'Build step can be added here if needed'
                 }
             }
         }
@@ -79,10 +79,10 @@ pipeline {
         stage('Deploy to AWS') {
             steps {
                 script {
-                    def codeDeploy = awsCodeDeploy applicationName: 'jenkin-CICD', 
-                                                  deploymentGroupName: 'jenkins-dg', 
-                                                  credentialsId: AWS_CREDENTIAL, 
-                                                  region: 'ap-south-1' // Replace with your region
+                    def deploy = awsCodeDeploy applicationName: 'jenkin-CICD', 
+                                              deploymentGroupName: 'jenkins-dg', 
+                                              credentialsId: AWS_CREDENTIALS, 
+                                              region: 'ap-south-1' // Replace with your region
                 }
             }
         }
@@ -90,6 +90,7 @@ pipeline {
     
     post {
         always {
+            echo 'Pipeline completed'
             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             junit '**/target/test-*.xml'
         }
