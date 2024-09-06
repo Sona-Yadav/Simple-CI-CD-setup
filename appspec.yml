@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /
+  - source: GitHub
     destination: /home/ubuntu/my_flask_app
 
 hooks:
