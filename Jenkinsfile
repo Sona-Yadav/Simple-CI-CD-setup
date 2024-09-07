@@ -38,16 +38,21 @@ pipeline {
                 echo 'Deploying to AWS CodeDeploy...'
                 
                 // Trigger AWS CodeDeploy using the AWS CodeDeploy plugin
-                step([
-                    $class: 'AWSCodeDeployPublisher',
-                    applicationName: "${APPLICATION_NAME}",
-                    deploymentGroupName: "${DEPLOYMENT_GROUP_NAME}",
-                    deploymentRevisionLocation: [
-                        revisionType: 'GitHub',  // Use GitHub as the source of your code
-                        repositoryName: 'Sona-Yadav/simplehelloworld',
-                        commitId: 'master'  // Specify the branch or commit ID
-                    ]
-                ])
+                // step([
+                    // $class: 'AWSCodeDeployPublisher',
+                    steps{
+                        script{
+                            awsCodeDeploy(
+                                applicationName: "${APPLICATION_NAME}",
+                                deploymentGroupName: "${DEPLOYMENT_GROUP_NAME}",
+                                deploymentRevisionLocation: [
+                                    revisionType: 'GitHub',  // Use GitHub as the source of your code
+                                    repositoryName: 'Sona-Yadav/simplehelloworld',
+                                    commitId: 'master'  // Specify the branch or commit ID
+                                 ]
+                            )
+                        }
+                // ])
             }
         }
     }
