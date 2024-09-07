@@ -68,19 +68,19 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/your-repo.git'
+                git 'https://github.com/Sona-Yadav/simplehelloworld.git'
             }
         }
 
         stage('Package Application') {
             steps {
-                sh 'zip -r my_web_app.zip *'
+                sh 'zip -r my_flask_app.zip *'
             }
         }
 
         stage('Upload to S3') {
             steps {
-                sh 'aws s3 cp my_web_app.zip s3://$S3_BUCKET/'
+                sh 'aws s3 cp my_flask_app.zip s3://$S3_BUCKET/'
             }
         }
 
